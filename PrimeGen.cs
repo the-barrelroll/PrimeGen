@@ -25,6 +25,44 @@ namespace Generation_test
             primeFinder.GetPrime(10000).ToString();
         }//PrimeGen
         
+        //generates a random seed
+        private void buttonRandom_Click(object sender, EventArgs e)
+        {
+            Random random = new Random();
+            textBoxSeed.Text = (Math.Round((float) random.NextDouble(), 8) * 100000000).ToString();
+        }//buttonRandom_Click
+
+        //Checks 10000 random seeds to check the distribution
+        private void buttonCheck10000_Click(object sender, EventArgs e)
+        {
+            Random random = new Random();
+            double[,] boardworth = new double[size,size];
+            for (int i = 0; i < 1000; i++)
+            {
+                textBoxSeed.Text = (Math.Round((float)random.NextDouble(), 8) * 100000000).ToString();
+                for (int j = 0; j < size; j++)
+                    for (int k = 0; k < size; k++)
+                        if (board[j, k])
+                            boardworth[j, k]++;
+            }
+            double res = 0;
+            foreach (var i in boardworth)
+            {
+                res += i;
+            }
+            MessageBox.Show(res/(size*size)/10 + @"%");
+        }//buttonCheck10000_Click
+
+        //Changes the size
+        private void textBoxSize_TextChanged(object sender, EventArgs e)
+        {
+            int.TryParse(textBoxSize.Text, out size);
+            ClientSize = new Size(Math.Max(180 + size * 20, 380), Math.Max(180 + size * 20, 380));
+            panelMap.Invalidate();
+            board = new bool[size, size];
+            panelMap.Size = new Size(size * 20, size * 20);
+        }//textBoxSize_TextChanged
+
         //Generate everything based on the number that was put in
         private void textBoxSeed_TextChanged(object sender, EventArgs e)
         {
@@ -66,6 +104,17 @@ namespace Generation_test
             panelMap.Invalidate();
         }//textBoxSeed_TextChanged
 
+        //Paints the map
+        private void panelMap_Paint(object sender, PaintEventArgs e)
+        {
+            for (int i = 0; i < size; i++)
+                for (int j = 0; j < size; j++)
+                    if (board[i, j])
+                        e.Graphics.FillRectangle(Brushes.Black, i * 20, j * 20, 20, 20);
+                    else
+                        e.Graphics.FillRectangle(Brushes.White, i * 20, j * 20, 20, 20);
+        }//panelMap_Paint
+
         //Makes a more interestin seed out of the given number
         private static long MakeSeed(long seed)
         {
@@ -73,7 +122,7 @@ namespace Generation_test
                 seed -= 7 * 3468667;
             else
                 seed += 7 * 3468667;
-            switch (seed%10)
+            switch (seed % 10)
             {
                 //all numbers are primes, taken from: https://primes.utm.edu/lists/small/small.html#10
                 case 0:
@@ -109,55 +158,6 @@ namespace Generation_test
             }
             return seed;
         }//MakeSeed
-
-        //generates a random seed
-        private void buttonRandom_Click(object sender, EventArgs e)
-        {
-            Random random = new Random();
-            textBoxSeed.Text = (Math.Round((float) random.NextDouble(), 8) * 100000000).ToString();
-        }//buttonRandom_Click
-
-        //Paints the map
-        private void panelMap_Paint(object sender, PaintEventArgs e)
-        {
-            for (int i = 0; i < size; i++)
-                for (int j = 0; j < size; j++)
-                    if (board[i, j])
-                        e.Graphics.FillRectangle(Brushes.Black, i * 20, j * 20, 20, 20);
-                    else
-                        e.Graphics.FillRectangle(Brushes.White, i * 20, j * 20, 20, 20);
-        }//panelMap_Paint
-
-        //Checks 10000 random seeds to check the distribution
-        private void buttonCheck10000_Click(object sender, EventArgs e)
-        {
-            Random random = new Random();
-            double[,] boardworth = new double[size,size];
-            for (int i = 0; i < 1000; i++)
-            {
-                textBoxSeed.Text = (Math.Round((float)random.NextDouble(), 8) * 100000000).ToString();
-                for (int j = 0; j < size; j++)
-                    for (int k = 0; k < size; k++)
-                        if (board[j, k])
-                            boardworth[j, k]++;
-            }
-            double res = 0;
-            foreach (var i in boardworth)
-            {
-                res += i;
-            }
-            MessageBox.Show(res/(size*size)/10 + @"%");
-        }//buttonCheck10000_Click
-
-        //Changes the size
-        private void textBoxSize_TextChanged(object sender, EventArgs e)
-        {
-            int.TryParse(textBoxSize.Text, out size);
-            ClientSize = new Size(Math.Max(180 + size * 20, 380), Math.Max(180 + size * 20, 380));
-            panelMap.Invalidate();
-            board = new bool[size, size];
-            panelMap.Size = new Size(size * 20, size * 20);
-        }//textBoxSize_TextChanged
     }
 
     public class PrimeFinder
