@@ -1,6 +1,6 @@
 ﻿namespace Generation_test
 {
-    partial class Form1
+    partial class PrimeGen
     {
         /// <summary>
         /// Required designer variable.

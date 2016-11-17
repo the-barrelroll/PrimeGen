@@ -10,10 +10,10 @@ using System.Windows.Forms;
 
 namespace Generation_test
 {
-    public partial class Form1 : Form
+    public partial class PrimeGen : Form
     {
         PrimeFinder primeFinder = new PrimeFinder();
-        public Form1()
+        public PrimeGen()
         {
             InitializeComponent();
             panel1.Size = new Size(size*20, size*20);
