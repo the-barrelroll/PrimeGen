@@ -12,20 +12,19 @@ namespace Generation_test
 {
     public partial class Form1 : Form
     {
+        PrimeFinder primeFinder = new PrimeFinder();
         public Form1()
         {
             InitializeComponent();
             panel1.Size = new Size(size*20, size*20);
             ClientSize = new Size(size*20 + 180, 180 + size*20);
-            PrimeFinder primeFinder = new PrimeFinder();
-            MessageBox.Show(primeFinder.GetPrime(5).ToString());
-            primeFinder.ShowPrimes();
             
+            //
+            primeFinder.GetPrime(10000).ToString();
         }
 
         private static int size = 10;
-        //private PrimeList<int> primes = new PrimeList<int>();
-
+        
         private long currentSeed = 0;
         bool[,] board = new bool[size,size];
 
@@ -36,11 +35,16 @@ namespace Generation_test
             {
                 currentSeed = MakeSeed(currentSeed);
                 labelActualSeed.Text = currentSeed.ToString();
-                textBoxHP.Text = (currentSeed % 90 + 10).ToString();
-                textBoxMP.Text = (currentSeed % 45 + 5).ToString();
-                textBoxAttack.Text = (currentSeed % 19 + 1).ToString();
-                textBoxDefense.Text = (currentSeed % 19 + 1).ToString();
-                textBoxSpeed.Text = (currentSeed % 4 + 1).ToString();
+                int hp = (int)(currentSeed % (double)primeFinder.GetPrime(10) / primeFinder.GetPrime(10) * 95 + 5);
+                textBoxHP.Text = hp.ToString();
+                int mp = (int)(currentSeed % (double)primeFinder.GetPrime(15) / primeFinder.GetPrime(15) * 45 + 5);
+                textBoxMP.Text = mp.ToString();
+                int attack = (int)(currentSeed % (double)primeFinder.GetPrime(20) / primeFinder.GetPrime(20) * 19 + 1);
+                textBoxAttack.Text = attack.ToString();
+                int defense = (int)(currentSeed % (double)primeFinder.GetPrime(25) / primeFinder.GetPrime(25) * 19 + 1);
+                textBoxDefense.Text = defense.ToString();
+                int speed = (int)(currentSeed % (double)primeFinder.GetPrime(30) / primeFinder.GetPrime(30) * 4 + 1);
+                textBoxSpeed.Text = speed.ToString();
                 int[,] x = new int[size, size];
                 int[,] y = new int[size, size];
                 int number = 0;
@@ -48,25 +52,19 @@ namespace Generation_test
                 {
                     for (int l = 0; l < size; l++)
                     {
-                        x[k, l] = (int)currentSeed % (100 + number);
-                        y[k, l] = (int)currentSeed % (200 + number);
-                        number += k * l;
+                        x[k, l] = (int)(currentSeed % (double)primeFinder.GetPrime(number + 100) / primeFinder.GetPrime(number + 100) * 20);
+                        y[k, l] = (int)(currentSeed % (double)primeFinder.GetPrime(number + 200) / primeFinder.GetPrime(number + 200) * 20);
+                        number ++;
                     }
                 }
                 for (int i = 0; i < size; i++)
                     for (int j = 0; j < size; j++)
                     {
-                        board[i, j] = x[i, j] % 7 == 0 || y[i, j] % 7 == 0;
+                        board[i, j] = x[i, j] % 2 == 0 || y[i, j] % 2 == 0;
                     }
             }
             
             panel1.Invalidate();
-        }
-
-        private int Prime(int prime)
-        {
-
-            return prime;
         }
 
         private static long MakeSeed(long seed)
@@ -77,7 +75,7 @@ namespace Generation_test
                 seed += 7 * 3468667;
                 switch (seed%10)
                 {
-                    //all numbers are primes, takin from: https://primes.utm.edu/lists/small/small.html#10
+                    //all numbers are primes, taken from: https://primes.utm.edu/lists/small/small.html#10
                     case 0:
                         seed *= 3367900313;
                         break;
@@ -116,7 +114,6 @@ namespace Generation_test
         {
             Random random = new Random();
             textBoxSeed.Text = (Math.Round((float) random.NextDouble(), 8) * 100000000).ToString();
-            //textBoxSeed.Text = Random;
         }
 
         private void panel1_Paint(object sender, PaintEventArgs e)
@@ -128,7 +125,6 @@ namespace Generation_test
                         e.Graphics.FillRectangle(Brushes.Black, i * 20, j * 20, 20, 20);
                     else
                         e.Graphics.FillRectangle(Brushes.White, i * 20, j * 20, 20, 20);
-                    //MessageBox.Show(i + j.ToString());
                 }
             
         }
@@ -136,44 +132,42 @@ namespace Generation_test
 
     public class PrimeFinder
     {
-        private List<int> primes = new List<int>();
-        private int lastPrime = 3;
-        private int lastPrimeCount = 2;
+        private int lastPrimeCount = 3;
 
-        public PrimeFinder()
-        {
-            primes.Add(1);
-            primes.Add(2);
-        }
+        public List<int> PrimeList { get; } = new List<int> {2,3,5};
 
         public int GetPrime(int nr)
         {
-            if (nr > primes.Count)
+            if (nr > PrimeList.Count)
                 GeneratePrimesUntil(nr);
-            return primes[nr - 1];
+            return PrimeList[nr - 1];
         }
 
         public void ShowPrimes()
         {
-            string result = "[1] " + primes[0];
-            for (int i = 1; i < primes.Count; i++)
-                result += ", [" + (i + 1) + "] " + primes[i];
+            string result = "[1] " + PrimeList[0];
+            for (int i = 1; i < PrimeList.Count; i++)
+                result += ", [" + (i + 1) + "] " + PrimeList[i];
             MessageBox.Show(result);
         }
 
         private void GeneratePrimesUntil(int nr)
         {
-            double currentNr = lastPrime;
+            double currentNr = PrimeList.Last() + 1;
             while (lastPrimeCount < nr)
             {
-                double root = Math.Round(Math.Sqrt(currentNr), 8);
+                int root = (int)Math.Sqrt(currentNr);
                 bool isPrime = true;
                 if (currentNr%2 == 1)
                 {
-                    for (double count = 2; count <= root; count++)
+                    
+                    for (int count = (root / 2) * 2 + 1; count >= 3; count-= 2)
                     {
                         if (currentNr%count == 0)
+                        {
                             isPrime = false;
+                            break;
+                        }
                     }
                 }
                 else
@@ -183,8 +177,7 @@ namespace Generation_test
                 if (isPrime)
                 {
                     lastPrimeCount++;
-                    lastPrime = (int)currentNr;
-                    primes.Add(lastPrime);
+                    PrimeList.Add((int)currentNr);
                 }
                 currentNr++;
             }
