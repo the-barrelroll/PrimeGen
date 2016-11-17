@@ -34,15 +34,16 @@
             this.labelMP = new System.Windows.Forms.Label();
             this.labelAttack = new System.Windows.Forms.Label();
             this.labelDefense = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
+            this.labelSpeed = new System.Windows.Forms.Label();
             this.textBoxHP = new System.Windows.Forms.TextBox();
             this.textBoxAttack = new System.Windows.Forms.TextBox();
             this.textBoxMP = new System.Windows.Forms.TextBox();
             this.textBoxSpeed = new System.Windows.Forms.TextBox();
             this.textBoxDefense = new System.Windows.Forms.TextBox();
-            this.panel1 = new System.Windows.Forms.Panel();
+            this.panelMap = new System.Windows.Forms.Panel();
             this.buttonRandom = new System.Windows.Forms.Button();
             this.labelActualSeed = new System.Windows.Forms.Label();
+            this.buttonCheck10000 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // labelSeed
@@ -99,14 +100,14 @@
             this.labelDefense.TabIndex = 10;
             this.labelDefense.Text = "Defense";
             // 
-            // label5
+            // labelSpeed
             // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(13, 146);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(38, 13);
-            this.label5.TabIndex = 11;
-            this.label5.Text = "Speed";
+            this.labelSpeed.AutoSize = true;
+            this.labelSpeed.Location = new System.Drawing.Point(13, 146);
+            this.labelSpeed.Name = "labelSpeed";
+            this.labelSpeed.Size = new System.Drawing.Size(38, 13);
+            this.labelSpeed.TabIndex = 11;
+            this.labelSpeed.Text = "Speed";
             // 
             // textBoxHP
             // 
@@ -153,13 +154,13 @@
             this.textBoxDefense.Size = new System.Drawing.Size(100, 20);
             this.textBoxDefense.TabIndex = 15;
             // 
-            // panel1
+            // panelMap
             // 
-            this.panel1.Location = new System.Drawing.Point(164, 62);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(500, 500);
-            this.panel1.TabIndex = 17;
-            this.panel1.Paint += new System.Windows.Forms.PaintEventHandler(this.panel1_Paint);
+            this.panelMap.Location = new System.Drawing.Point(164, 62);
+            this.panelMap.Name = "panelMap";
+            this.panelMap.Size = new System.Drawing.Size(500, 500);
+            this.panelMap.TabIndex = 17;
+            this.panelMap.Paint += new System.Windows.Forms.PaintEventHandler(this.panelMap_Paint);
             // 
             // buttonRandom
             // 
@@ -180,27 +181,38 @@
             this.labelActualSeed.TabIndex = 19;
             this.labelActualSeed.Text = "placeholderseed";
             // 
-            // Form1
+            // buttonCheck10000
+            // 
+            this.buttonCheck10000.Location = new System.Drawing.Point(239, 13);
+            this.buttonCheck10000.Name = "buttonCheck10000";
+            this.buttonCheck10000.Size = new System.Drawing.Size(75, 23);
+            this.buttonCheck10000.TabIndex = 20;
+            this.buttonCheck10000.Text = "Check 10000";
+            this.buttonCheck10000.UseVisualStyleBackColor = true;
+            this.buttonCheck10000.Click += new System.EventHandler(this.buttonCheck10000_Click);
+            // 
+            // PrimeGen
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(676, 574);
+            this.Controls.Add(this.buttonCheck10000);
             this.Controls.Add(this.labelActualSeed);
             this.Controls.Add(this.buttonRandom);
-            this.Controls.Add(this.panel1);
+            this.Controls.Add(this.panelMap);
             this.Controls.Add(this.textBoxSpeed);
             this.Controls.Add(this.textBoxDefense);
             this.Controls.Add(this.textBoxAttack);
             this.Controls.Add(this.textBoxMP);
             this.Controls.Add(this.textBoxHP);
-            this.Controls.Add(this.label5);
+            this.Controls.Add(this.labelSpeed);
             this.Controls.Add(this.labelDefense);
             this.Controls.Add(this.labelAttack);
             this.Controls.Add(this.labelMP);
             this.Controls.Add(this.labelHP);
             this.Controls.Add(this.textBoxSeed);
             this.Controls.Add(this.labelSeed);
-            this.Name = "Form1";
+            this.Name = "PrimeGen";
             this.Text = "Generator";
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -215,15 +227,16 @@
         private System.Windows.Forms.Label labelMP;
         private System.Windows.Forms.Label labelAttack;
         private System.Windows.Forms.Label labelDefense;
-        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label labelSpeed;
         private System.Windows.Forms.TextBox textBoxHP;
         private System.Windows.Forms.TextBox textBoxAttack;
         private System.Windows.Forms.TextBox textBoxMP;
         private System.Windows.Forms.TextBox textBoxSpeed;
         private System.Windows.Forms.TextBox textBoxDefense;
-        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Panel panelMap;
         private System.Windows.Forms.Button buttonRandom;
         private System.Windows.Forms.Label labelActualSeed;
+        private System.Windows.Forms.Button buttonCheck10000;
     }
 }
 
