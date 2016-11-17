@@ -166,23 +166,6 @@ namespace Generation_test
         //What nr was the last prime found
         private int lastPrimeCount = 3;
 
-        //Get a certain prime. If the prime is not in the list, it will generate until there
-        public int GetPrime(int nr)
-        {
-            if (nr > PrimeList.Count)
-                GeneratePrimesUntil(nr);
-            return PrimeList[nr - 1];
-        }//GetPrime
-
-        //Shows a messagebox with all the current primes
-        public void ShowPrimes()
-        {
-            string result = "[1] " + PrimeList[0];
-            for (int i = 1; i < PrimeList.Count; i++)
-                result += ", [" + (i + 1) + "] " + PrimeList[i];
-            MessageBox.Show(result);
-        }//ShowPrimes
-
         //Generates primes until the asked nr
         private void GeneratePrimesUntil(int nr)
         {
@@ -211,5 +194,22 @@ namespace Generation_test
                 currentNr += 2;
             }
         }//GeneratePrimesUntil
+
+        //Get a certain prime. If the prime is not in the list, it will generate until there
+        public int GetPrime(int nr)
+        {
+            if (nr > PrimeList.Count)
+                GeneratePrimesUntil(nr);
+            return PrimeList[nr - 1];
+        }//GetPrime
+
+        //Shows a messagebox with all the current primes
+        public void ShowPrimes()
+        {
+            string result = "[1] " + PrimeList[0];
+            for (int i = 1; i < PrimeList.Count; i++)
+                result += ", [" + (i + 1) + "] " + PrimeList[i];
+            MessageBox.Show(result);
+        }//ShowPrimes
     }
 }
