@@ -21,10 +21,7 @@ namespace Generation_test
         public PrimeGen()
         {
             InitializeComponent();
-            size = 10;
-            board = new bool[size, size];
-            panelMap.Size = new Size(size*20, size*20);
-            ClientSize = new Size(size*20 + 180, 180 + size*20);
+            textBoxSize.Text = "20";
             primeFinder.GetPrime(10000).ToString();
         }//PrimeGen
         
@@ -151,6 +148,16 @@ namespace Generation_test
             }
             MessageBox.Show(res/(size*size)/10 + @"%");
         }//buttonCheck10000_Click
+
+        //Changes the size
+        private void textBoxSize_TextChanged(object sender, EventArgs e)
+        {
+            int.TryParse(textBoxSize.Text, out size);
+            ClientSize = new Size(Math.Max(180 + size * 20, 380), Math.Max(180 + size * 20, 380));
+            panelMap.Invalidate();
+            board = new bool[size, size];
+            panelMap.Size = new Size(size * 20, size * 20);
+        }//textBoxSize_TextChanged
     }
 
     public class PrimeFinder

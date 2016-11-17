@@ -44,6 +44,7 @@
             this.buttonRandom = new System.Windows.Forms.Button();
             this.labelActualSeed = new System.Windows.Forms.Label();
             this.buttonCheck10000 = new System.Windows.Forms.Button();
+            this.textBoxSize = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // labelSeed
@@ -191,11 +192,20 @@
             this.buttonCheck10000.UseVisualStyleBackColor = true;
             this.buttonCheck10000.Click += new System.EventHandler(this.buttonCheck10000_Click);
             // 
+            // textBoxSize
+            // 
+            this.textBoxSize.Location = new System.Drawing.Point(321, 15);
+            this.textBoxSize.Name = "textBoxSize";
+            this.textBoxSize.Size = new System.Drawing.Size(100, 20);
+            this.textBoxSize.TabIndex = 21;
+            this.textBoxSize.TextChanged += new System.EventHandler(this.textBoxSize_TextChanged);
+            // 
             // PrimeGen
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(676, 574);
+            this.Controls.Add(this.textBoxSize);
             this.Controls.Add(this.buttonCheck10000);
             this.Controls.Add(this.labelActualSeed);
             this.Controls.Add(this.buttonRandom);
@@ -237,6 +247,7 @@
         private System.Windows.Forms.Button buttonRandom;
         private System.Windows.Forms.Label labelActualSeed;
         private System.Windows.Forms.Button buttonCheck10000;
+        private System.Windows.Forms.TextBox textBoxSize;
     }
 }
 
