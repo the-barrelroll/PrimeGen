@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -22,7 +23,11 @@ namespace Generation_test
         {
             InitializeComponent();
             textBoxSize.Text = "20";
-            primeFinder.GetPrime(10000).ToString();
+            
+            primeFinder.GetPrime(1000000);
+            //MessageBox.Show(primeFinder.GetPrimeIndex(7).ToString());
+            MessageBox.Show(primeFinder.GetPrime(1000000).ToString());
+            //primeFinder.ShowPrimes();
         }//PrimeGen
         
         //generates a random seed
@@ -37,7 +42,7 @@ namespace Generation_test
         {
             Random random = new Random();
             double[,] boardworth = new double[size,size];
-            for (int i = 0; i < 1000; i++)
+            for (int i = 0; i < 10000; i++)
             {
                 textBoxSeed.Text = (Math.Round((float)random.NextDouble(), 8) * 100000000).ToString();
                 for (int j = 0; j < size; j++)
@@ -50,7 +55,7 @@ namespace Generation_test
             {
                 res += i;
             }
-            MessageBox.Show(res/(size*size)/10 + @"%");
+            MessageBox.Show(res/(size*size)/100 + @"%");
         }//buttonCheck10000_Click
 
         //Changes the size
@@ -166,6 +171,12 @@ namespace Generation_test
         //What nr was the last prime found
         private int lastPrimeCount = 3;
 
+        //Finds the next closest prime of the given number
+        public int ClosestNextPrime(int nr)
+        {
+            return PrimeList.Find(x => x > nr);
+        }//ClosestNextPrime
+
         //Generates primes until the asked nr
         private void GeneratePrimesUntil(int nr)
         {
@@ -177,9 +188,10 @@ namespace Generation_test
                 int root = (int)Math.Sqrt(currentNr) / 2 * 2 + 1;
                 bool isPrime = true;
                 //Actual check to see if a number is prime or not
-                for (int count = root; count >= 3; count-= 2)
+                int lim = GetPrimeIndex(root);
+                for (int count = 0; count <= lim; count++)
                 {
-                    if (currentNr%count == 0)
+                    if (currentNr%PrimeList[count] == 0)
                     {
                         isPrime = false;
                         break;
@@ -202,6 +214,12 @@ namespace Generation_test
                 GeneratePrimesUntil(nr);
             return PrimeList[nr - 1];
         }//GetPrime
+
+        //Gets the index of the given prime. returns -1 if not found
+        public int GetPrimeIndex(int nr)
+        {
+            return PrimeList.FindIndex(x => x >= nr);
+        }//GetPrimeIndex
 
         //Shows a messagebox with all the current primes
         public void ShowPrimes()
