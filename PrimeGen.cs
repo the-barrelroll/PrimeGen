@@ -16,15 +16,15 @@ namespace Generation_test
         private PrimeFinder primeFinder = new PrimeFinder();
         private int size;
         private long currentSeed;
-        private bool[,] board;
+        private bool[,] board = new bool[0,0];
 
         //Sets a few basic variables and finds the first 10000 primes
         public PrimeGen()
         {
             InitializeComponent();
             textBoxSize.Text = "20";
-            primeFinder.GetPrimeAtIndex(1000000);
-            MessageBox.Show(primeFinder.GetPrimeAtIndex(1000000).ToString());
+            primeFinder.GetPrimeAtIndex(10000);
+            //MessageBox.Show(primeFinder.PrimeList.Last().ToString());
         }//PrimeGen
 
         //generates a random seed
@@ -59,10 +59,10 @@ namespace Generation_test
         private void textBoxSize_TextChanged(object sender, EventArgs e)
         {
             int.TryParse(textBoxSize.Text, out size);
-            ClientSize = new Size(Math.Max(180 + size * 20, 380), Math.Max(180 + size * 20, 380));
+            ClientSize = new Size(Math.Max(180 + size * 20 + 400, 380), Math.Max(180 + size * 20 + 400, 380));
             panelMap.Invalidate();
             board = new bool[size, size];
-            panelMap.Size = new Size(size * 20, size * 20);
+            panelMap.Size = new Size(size * 20 + 400, size * 20 + 400);
         }//textBoxSize_TextChanged
 
         //Generate everything based on the number that was put in
@@ -83,25 +83,55 @@ namespace Generation_test
                 textBoxDefense.Text = defense.ToString();
                 int speed = (int)(currentSeed % (double)primeFinder.GetPrimeAtIndex(30) / primeFinder.GetPrimeAtIndex(30) * 5 + 1);
                 textBoxSpeed.Text = speed.ToString();
-                int[,] x = new int[size, size];
-                int[,] y = new int[size, size];
-                int number = 0;
+                bool[,] x = new bool[size, size];
+                bool[,] y = new bool[size, size];
+                board = new bool[size + 20,size + 20];
+                for(int i = 0; i < size + 20; i++)
+                    for (int j = 0; j < size + 20; j++)
+                        board[i, j] = false;
+                //int number = 0;
                 //Makes 2 matrices which later get used to see whether the bool should be true of false (used in drawing the map)
-                for (int k = 0; k < size; k++)
+                /*for (int k = 0; k < size; k++)
                 {
                     for (int l = 0; l < size; l++)
                     {
-                        x[k, l] = (int)(currentSeed % (double)primeFinder.GetPrimeAtIndex(number + 100) / primeFinder.GetPrimeAtIndex(number + 100) * 20);
+                        x[k, l] = (int)(currentSeed % (double)primeFinder.GetPrimeAtIndex(number + 100) / primeFinder.GetPrimeAtIndex(number + 100) * 100) % 2 == 0;
                         number++;
-                        y[k, l] = (int)(currentSeed % (double)primeFinder.GetPrimeAtIndex(number + 200) / primeFinder.GetPrimeAtIndex(number + 200) * 20);
+                        y[k, l] = (int)(currentSeed % (double)primeFinder.GetPrimeAtIndex(number + 200) / primeFinder.GetPrimeAtIndex(number + 200) * 100) % 2 == 1;
                         number++;
                     }
                 }
                 for (int i = 0; i < size; i++)
+                {
                     for (int j = 0; j < size; j++)
                     {
-                        board[i, j] = x[i, j] % 2 == 0 || y[i, j] % 2 == 0;
+                        board[i, j] = x[i, j] || y[i, j];
                     }
+                }*/
+                Room[] rooms = new Room[(int)(currentSeed % (double)primeFinder.GetPrimeAtIndex(4000) / primeFinder.GetPrimeAtIndex(4000) * size/2 + 4)];
+                for (int i = 0; i < rooms.Length; i++)
+                {
+                    rooms[i] = new Room();
+                    rooms[i].roomsize = (int)(currentSeed%(double) primeFinder.GetPrimeAtIndex(4100 + i)/primeFinder.GetPrimeAtIndex(4100 + i) * (size) + 4);
+                    rooms[i].roomwidth = (int) (currentSeed%(double) primeFinder.GetPrimeAtIndex(4200 + i)/primeFinder.GetPrimeAtIndex(4200 + i) * (rooms[i].roomsize - 4) + 2);
+                    rooms[i].roomheigth = rooms[i].roomsize - rooms[i].roomwidth;
+                    rooms[i].roomx = (int)(currentSeed % (double)primeFinder.GetPrimeAtIndex(4300 + i) / primeFinder.GetPrimeAtIndex(4300 + i) * 
+                        size);
+                    rooms[i].roomy = (int)(currentSeed % (double)primeFinder.GetPrimeAtIndex(4400 + i) / primeFinder.GetPrimeAtIndex(4400 + i) *
+                        size);
+                    //MessageBox.Show(rooms[i].roomwidth + " " + rooms[i].roomheigth + " " + rooms[i].roomx + " " +
+                      //              rooms[i].roomy);
+                }
+                foreach (Room room in rooms)
+                {
+                    for (int i = room.roomx; i < room.roomwidth + room.roomx && i < size + 20; i++)
+                    {
+                        for (int j = room.roomy; j < room.roomheigth + room.roomy && j < size + 20; j++)
+                        {
+                            board[i, j] = true;
+                        }
+                    }
+                }
             }
             panelMap.Invalidate();
         }//textBoxSeed_TextChanged
@@ -109,12 +139,14 @@ namespace Generation_test
         //Paints the map
         private void panelMap_Paint(object sender, PaintEventArgs e)
         {
-            for (int i = 0; i < size; i++)
-                for (int j = 0; j < size; j++)
+            Panel obj = (Panel) sender;
+            e.Graphics.FillRectangle(Brushes.White, 0, 0, obj.Width, obj.Height);
+            for (int i = 0; i < board.GetLength(0); i++)
+                for (int j = 0; j < board.GetLength(1); j++)
                     if (board[i, j])
                         e.Graphics.FillRectangle(Brushes.Black, i * 20, j * 20, 20, 20);
-                    else
-                        e.Graphics.FillRectangle(Brushes.White, i * 20, j * 20, 20, 20);
+                    //else
+                      //  e.Graphics.FillRectangle(Brushes.White, i * 20, j * 20, 20, 20);
         }//panelMap_Paint
 
         //Makes a more interestin seed out of the given number
@@ -162,12 +194,17 @@ namespace Generation_test
         }//MakeSeed
     }
 
+    public class Room
+    {
+        public int roomsize, roomwidth, roomheigth, roomx, roomy;
+
+    }
+
     public class PrimeFinder
     {
         public List<int> PrimeList { get; } = new List<int> { 2, 3, 5 };
         //What nr was the last prime found
-        private int lastPrimeCount = 3;
-
+        
         //Checks if the specified number is a prime
         private void CheckPrime(double currentNr)
         {
@@ -187,7 +224,6 @@ namespace Generation_test
             //Adds the number if it is a prime
             if (isPrime)
             {
-                lastPrimeCount++;
                 PrimeList.Add((int)currentNr);
             }
         }//CheckPrime
@@ -197,7 +233,7 @@ namespace Generation_test
         {
             //Where to start looking for primes
             double currentNr = PrimeList.Last() + 2;
-            while (lastPrimeCount < nr)
+            while (PrimeList.Count < nr)
             {
                 CheckPrime(currentNr);
                 currentNr += 2;
