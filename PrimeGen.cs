@@ -23,8 +23,8 @@ namespace Generation_test
         {
             InitializeComponent();
             textBoxSize.Text = "20";
-            primeFinder.GetPrime(1000000);
-            MessageBox.Show(primeFinder.GetPrime(1000000).ToString());
+            primeFinder.GetPrimeAtIndex(1000000);
+            MessageBox.Show(primeFinder.GetPrimeAtIndex(1000000).ToString());
         }//PrimeGen
 
         //generates a random seed
@@ -73,15 +73,15 @@ namespace Generation_test
             {
                 currentSeed = MakeSeed(currentSeed);
                 labelActualSeed.Text = currentSeed.ToString();
-                int hp = (int)(currentSeed % (double)primeFinder.GetPrime(10) / primeFinder.GetPrime(10) * 96 + 5);
+                int hp = (int)(currentSeed % (double)primeFinder.GetPrimeAtIndex(10) / primeFinder.GetPrimeAtIndex(10) * 96 + 5);
                 textBoxHP.Text = hp.ToString();
-                int mp = (int)(currentSeed % (double)primeFinder.GetPrime(15) / primeFinder.GetPrime(15) * 46 + 5);
+                int mp = (int)(currentSeed % (double)primeFinder.GetPrimeAtIndex(15) / primeFinder.GetPrimeAtIndex(15) * 46 + 5);
                 textBoxMP.Text = mp.ToString();
-                int attack = (int)(currentSeed % (double)primeFinder.GetPrime(20) / primeFinder.GetPrime(20) * 20 + 1);
+                int attack = (int)(currentSeed % (double)primeFinder.GetPrimeAtIndex(20) / primeFinder.GetPrimeAtIndex(20) * 20 + 1);
                 textBoxAttack.Text = attack.ToString();
-                int defense = (int)(currentSeed % (double)primeFinder.GetPrime(25) / primeFinder.GetPrime(25) * 20 + 1);
+                int defense = (int)(currentSeed % (double)primeFinder.GetPrimeAtIndex(25) / primeFinder.GetPrimeAtIndex(25) * 20 + 1);
                 textBoxDefense.Text = defense.ToString();
-                int speed = (int)(currentSeed % (double)primeFinder.GetPrime(30) / primeFinder.GetPrime(30) * 5 + 1);
+                int speed = (int)(currentSeed % (double)primeFinder.GetPrimeAtIndex(30) / primeFinder.GetPrimeAtIndex(30) * 5 + 1);
                 textBoxSpeed.Text = speed.ToString();
                 int[,] x = new int[size, size];
                 int[,] y = new int[size, size];
@@ -91,9 +91,9 @@ namespace Generation_test
                 {
                     for (int l = 0; l < size; l++)
                     {
-                        x[k, l] = (int)(currentSeed % (double)primeFinder.GetPrime(number + 100) / primeFinder.GetPrime(number + 100) * 20);
+                        x[k, l] = (int)(currentSeed % (double)primeFinder.GetPrimeAtIndex(number + 100) / primeFinder.GetPrimeAtIndex(number + 100) * 20);
                         number++;
-                        y[k, l] = (int)(currentSeed % (double)primeFinder.GetPrime(number + 200) / primeFinder.GetPrime(number + 200) * 20);
+                        y[k, l] = (int)(currentSeed % (double)primeFinder.GetPrimeAtIndex(number + 200) / primeFinder.GetPrimeAtIndex(number + 200) * 20);
                         number++;
                     }
                 }
@@ -175,7 +175,7 @@ namespace Generation_test
             int root = (int)Math.Sqrt(currentNr) / 2 * 2 + 1;
             bool isPrime = true;
             //Actual check to see if a number is prime or not
-            int lim = GetPrimeIndex(root);
+            int lim = GetIndexOfPrime(root);
             for (int count = 0; count <= lim; count++)
             {
                 if (currentNr % PrimeList[count] == 0)
@@ -216,18 +216,18 @@ namespace Generation_test
         }//GeneratePrimesUntilNumber
 
         //Get a certain prime. If the prime is not in the list, it will generate until there
-        public int GetPrime(int nr)
+        public int GetPrimeAtIndex(int nr)
         {
             if (nr > PrimeList.Count)
                 GeneratePrimesUntilIndex(nr);
             return PrimeList[nr - 1];
-        }//GetPrime
+        }//GetPrimeAtIndex
 
         //Gets the index of the given prime. returns -1 if not found
-        public int GetPrimeIndex(int nr)
+        public int GetIndexOfPrime(int nr)
         {
             return PrimeList.FindIndex(x => x >= nr);
-        }//GetPrimeIndex
+        }//GetIndexOfPrime
 
         //Finds the next closest prime of the given number
         public int ClosestNextPrime(int nr)
