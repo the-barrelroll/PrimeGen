@@ -23,11 +23,7 @@ namespace Generation_test
         {
             InitializeComponent();
             textBoxSize.Text = "20";
-            
-            primeFinder.GetPrime(1000000);
-            //MessageBox.Show(primeFinder.GetPrimeIndex(7).ToString());
-            MessageBox.Show(primeFinder.GetPrime(1000000).ToString());
-            //primeFinder.ShowPrimes();
+            primeFinder.GetPrime(10000);
         }//PrimeGen
         
         //generates a random seed
@@ -170,13 +166,7 @@ namespace Generation_test
         public List<int> PrimeList { get; } = new List<int> { 2, 3, 5 };
         //What nr was the last prime found
         private int lastPrimeCount = 3;
-
-        //Finds the next closest prime of the given number
-        public int ClosestNextPrime(int nr)
-        {
-            return PrimeList.Find(x => x > nr);
-        }//ClosestNextPrime
-
+        
         //Generates primes until the asked nr
         private void GeneratePrimesUntil(int nr)
         {
@@ -220,6 +210,13 @@ namespace Generation_test
         {
             return PrimeList.FindIndex(x => x >= nr);
         }//GetPrimeIndex
+
+
+        //Finds the next closest prime of the given number
+        public int ClosestNextPrime(int nr)
+        {
+            return PrimeList.Find(x => x >= nr);
+        }//ClosestNextPrime
 
         //Shows a messagebox with all the current primes
         public void ShowPrimes()
