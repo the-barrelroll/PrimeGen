@@ -23,9 +23,10 @@ namespace Generation_test
         {
             InitializeComponent();
             textBoxSize.Text = "20";
-            primeFinder.GetPrime(10000);
+            primeFinder.GetPrime(1000000);
+            MessageBox.Show(primeFinder.GetPrime(1000000).ToString());
         }//PrimeGen
-        
+
         //generates a random seed
         private void buttonRandom_Click(object sender, EventArgs e)
         {
@@ -166,42 +167,59 @@ namespace Generation_test
         public List<int> PrimeList { get; } = new List<int> { 2, 3, 5 };
         //What nr was the last prime found
         private int lastPrimeCount = 3;
-        
-        //Generates primes until the asked nr
-        private void GeneratePrimesUntil(int nr)
+
+        //Checks if the specified number is a prime
+        private void CheckPrime(double currentNr)
+        {
+            //Starts checkking from the rounded root + 1, because that's the most efficient
+            int root = (int)Math.Sqrt(currentNr) / 2 * 2 + 1;
+            bool isPrime = true;
+            //Actual check to see if a number is prime or not
+            int lim = GetPrimeIndex(root);
+            for (int count = 0; count <= lim; count++)
+            {
+                if (currentNr % PrimeList[count] == 0)
+                {
+                    isPrime = false;
+                    break;
+                }
+            }
+            //Adds the number if it is a prime
+            if (isPrime)
+            {
+                lastPrimeCount++;
+                PrimeList.Add((int)currentNr);
+            }
+        }//CheckPrime
+
+        //Generates primes until the asked index
+        private void GeneratePrimesUntilIndex(int nr)
         {
             //Where to start looking for primes
             double currentNr = PrimeList.Last() + 2;
             while (lastPrimeCount < nr)
             {
-                //Starts checkking from the rounded root + 1, because that's the most efficient
-                int root = (int)Math.Sqrt(currentNr) / 2 * 2 + 1;
-                bool isPrime = true;
-                //Actual check to see if a number is prime or not
-                int lim = GetPrimeIndex(root);
-                for (int count = 0; count <= lim; count++)
-                {
-                    if (currentNr%PrimeList[count] == 0)
-                    {
-                        isPrime = false;
-                        break;
-                    }
-                }
-                //Adds the number if it is a prime
-                if (isPrime)
-                {
-                    lastPrimeCount++;
-                    PrimeList.Add((int)currentNr);
-                }
+                CheckPrime(currentNr);
                 currentNr += 2;
             }
-        }//GeneratePrimesUntil
+        }//GeneratePrimesUntilIndex
+
+        //Generates prime until the asked nr
+        public void GeneratePrimesUntilNumber(int nr)
+        {
+            double currentNr = PrimeList.Last() + 2;
+            while (PrimeList.Last() < nr)
+            {
+                CheckPrime(currentNr);
+                currentNr += 2;
+            }
+        }//GeneratePrimesUntilNumber
 
         //Get a certain prime. If the prime is not in the list, it will generate until there
         public int GetPrime(int nr)
         {
             if (nr > PrimeList.Count)
-                GeneratePrimesUntil(nr);
+                GeneratePrimesUntilIndex(nr);
             return PrimeList[nr - 1];
         }//GetPrime
 
@@ -210,7 +228,6 @@ namespace Generation_test
         {
             return PrimeList.FindIndex(x => x >= nr);
         }//GetPrimeIndex
-
 
         //Finds the next closest prime of the given number
         public int ClosestNextPrime(int nr)
